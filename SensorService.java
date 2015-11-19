@@ -24,7 +24,6 @@ public class SensorService extends Service implements SensorEventListener {
     private int freq = 500000;
     private boolean hostingActivityRunning;
     private List<DataSet> dataArray;
-    private int delta;
 
     private long lastBroadcastTime;
 
@@ -169,21 +168,20 @@ public class SensorService extends Service implements SensorEventListener {
 
         }
 
-
         if (time - lastBroadcastTime >= freq / 1000 && hostingActivityRunning) {
 
-            if(delta!= 0 && delta < dataArray.size()){
-                data.setD_accelX(data.getAccelX() - getDeltaDataSet(delta, dataArray).getAccelX());
-                data.setD_accelY(data.getAccelY() - getDeltaDataSet(delta, dataArray).getAccelY());
-                data.setD_accelZ(data.getAccelZ() - getDeltaDataSet(delta, dataArray).getAccelZ());
+            if(dataArray.size() > 0){
+                data.setD_accelX(data.getAccelX() - getDeltaDataSet(dataArray).getAccelX());
+                data.setD_accelY(data.getAccelY() - getDeltaDataSet(dataArray).getAccelY());
+                data.setD_accelZ(data.getAccelZ() - getDeltaDataSet(dataArray).getAccelZ());
 
-                data.setD_gyroX(data.getGyroX() - getDeltaDataSet(delta, dataArray).getGyroX());
-                data.setD_gyroY(data.getGyroY() - getDeltaDataSet(delta, dataArray).getGyroY());
-                data.setD_gyroZ(data.getGyroZ() - getDeltaDataSet(delta, dataArray).getGyroZ());
+                data.setD_gyroX(data.getGyroX() - getDeltaDataSet(dataArray).getGyroX());
+                data.setD_gyroY(data.getGyroY() - getDeltaDataSet(dataArray).getGyroY());
+                data.setD_gyroZ(data.getGyroZ() - getDeltaDataSet(dataArray).getGyroZ());
 
-                data.setD_magX(data.getMagX() - getDeltaDataSet(delta, dataArray).getMagX());
-                data.setD_magY(data.getMagY() - getDeltaDataSet(delta, dataArray).getMagY());
-                data.setD_magZ(data.getMagZ() - getDeltaDataSet(delta, dataArray).getMagZ());
+                data.setD_magX(data.getMagX() - getDeltaDataSet(dataArray).getMagX());
+                data.setD_magY(data.getMagY() - getDeltaDataSet(dataArray).getMagY());
+                data.setD_magZ(data.getMagZ() - getDeltaDataSet(dataArray).getMagZ());
 
             }
 
@@ -200,8 +198,8 @@ public class SensorService extends Service implements SensorEventListener {
 
     }
 
-    public DataSet getDeltaDataSet(int delta, List<DataSet> dataArray){
-        return dataArray.get(dataArray.size() - 1 - delta);
+    public DataSet getDeltaDataSet(List<DataSet> dataArray){
+        return dataArray.get(dataArray.size() - 1);
     }
 
     public void enableSensor() {
@@ -303,8 +301,6 @@ public class SensorService extends Service implements SensorEventListener {
     public void setHostingActivityRunning(boolean hostingActivityRunning) {
         this.hostingActivityRunning = hostingActivityRunning;
     }
-    public void setDelta(int delta) {
-        this.delta = delta;
-    }
+
 
 }
