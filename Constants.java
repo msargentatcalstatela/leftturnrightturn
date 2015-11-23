@@ -6,13 +6,12 @@ package com.myesis.classifierandsensorservice;
 public final class Constants {
 
     public static final String BROADCAST_SENSOR_DATA =
-            "com.detroitteatime.datagatherer.BROADCAST";
+            "com.myesis.classifierandsensorservice.BROADCAST";
 
     public static final String DATA =
-            "com.detroitteatime.datagatherer.DATA";
+            "com.myesis.classifierandsensorservice.DATA";
 
     public static final String LOGISIC_REGRESSION = "log_reg";
-
 
     public static final String ACCELX = "accelerationX";
     public static final String ACCELY = "accelerationY";
@@ -26,7 +25,6 @@ public final class Constants {
     public static final String GRAVITYX = "gravityX";
     public static final String GRAVITYY = "gravityY";
     public static final String GRAVITYZ = "gravityZ";
-
 
     public static final String LINEARX = "linear_AccelX";
     public static final String LINEARY = "linear_AccelY";
@@ -49,7 +47,5 @@ public final class Constants {
     public static final String ORIENTX = "orientationX";
     public static final String ORIENTY = "orientationY";
     public static final String ORIENTZ = "orientationZ";
-
-
 
 }

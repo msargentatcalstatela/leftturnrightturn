@@ -1,5 +1,6 @@
 package com.myesis.classifierandsensorservice;
 
+
 import android.content.Context;
 import android.util.Log;
 
@@ -130,7 +131,7 @@ public abstract class Predictor {
 
     }
 
-//Getters and Setters
+    //Getters and Setters
     public String getName() {
         return name;
     }

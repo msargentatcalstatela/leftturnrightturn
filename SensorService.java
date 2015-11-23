@@ -16,7 +16,10 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+//import com.myesis.classifierandsensorservice.DataSet;
 
 public class SensorService extends Service implements SensorEventListener {
     public static boolean isStarted;
@@ -168,7 +171,7 @@ public class SensorService extends Service implements SensorEventListener {
 
         }
 
-        if (time - lastBroadcastTime >= freq / 1000 && hostingActivityRunning) {
+        if (time - lastBroadcastTime >= freq / 1000.0) {
 
             if(dataArray.size() > 0){
                 data.setD_accelX(data.getAccelX() - getDeltaDataSet(dataArray).getAccelX());
@@ -185,17 +188,20 @@ public class SensorService extends Service implements SensorEventListener {
 
             }
 
+            data.setTime(new Date().toString());
             try {
                 dataArray.add((DataSet)data.clone());
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
             }
+
             lastBroadcastTime = time;
-            Intent localIntent = new Intent(Constants.BROADCAST_SENSOR_DATA).putExtra(Constants.DATA, data);
-            LocalBroadcastManager.getInstance(SensorService.this).sendBroadcast(localIntent);
 
+            if(hostingActivityRunning){
+                Intent localIntent = new Intent(Constants.BROADCAST_SENSOR_DATA).putExtra(Constants.DATA, data);
+                LocalBroadcastManager.getInstance(SensorService.this).sendBroadcast(localIntent);
+            }
         }
-
     }
 
     public DataSet getDeltaDataSet(List<DataSet> dataArray){
@@ -211,12 +217,6 @@ public class SensorService extends Service implements SensorEventListener {
         sensorManager.registerListener(this, sensorOrient, freq);
     }
 
-    public void resetSensors() {
-        sensorManager.unregisterListener(this);
-        enableSensor();
-        Log.i("My Code", "Reset sensors");
-
-    }
 
     public void disableSensor() {
         sensorManager.unregisterListener(this);
@@ -291,7 +291,7 @@ public class SensorService extends Service implements SensorEventListener {
     }
 
     public static void setIsStarted(boolean isStarted) {
-        SensorService.isStarted = isStarted;
+        com.myesis.classifierandsensorservice.SensorService.isStarted = isStarted;
     }
 
     public boolean isHostingActivityRunning() {

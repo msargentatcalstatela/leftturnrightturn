@@ -1,6 +1,7 @@
 package com.myesis.classifierandsensorservice;
-
 import android.content.Context;
+
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Created by marksargent on 10/18/15.
  */
-public class LogisticPredictor extends Predictor{
+public class LogisticPredictor extends Predictor {
 
     List<Double> paramList;
     private double yIntercept;
@@ -55,7 +56,6 @@ public class LogisticPredictor extends Predictor{
 
         return sigmoid(pTX + yIntercept);
     }
-
 
     @Override
     public boolean predict(DataSet data) {

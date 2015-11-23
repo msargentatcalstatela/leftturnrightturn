@@ -40,11 +40,7 @@ public class DataSet implements Serializable, Cloneable {
 
     @Override
     public String toString() {
-        return "  lat; " + getLat() +
-                "     lng; " + getLng() +
-                "     speedGPS; " + getSpeedGPS() +
-                "     speedACC; " + getSpeedACC() +
-                "     time; " + getTime() +
+        return "     time; " + getTime() +
                 "     accelX; " + getAccelX() +
                 "     accelY; " + getAccelY() +
                 "     accelZ; " + getAccelZ() +
@@ -75,7 +71,7 @@ public class DataSet implements Serializable, Cloneable {
 
     }
 
-    protected Object clone() throws CloneNotSupportedException {
+    public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 
@@ -149,39 +145,6 @@ public class DataSet implements Serializable, Cloneable {
 
     public void setD_gyroZ(double d_gyroZ) {
         this.d_gyroZ = d_gyroZ;
-    }
-
-
-    public double getLat() {
-        return lat;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    public double getLng() {
-        return lng;
-    }
-
-    public void setLng(double lng) {
-        this.lng = lng;
-    }
-
-    public double getSpeedGPS() {
-        return speedGPS;
-    }
-
-    public void setSpeedGPS(double speedGPS) {
-        this.speedGPS = speedGPS;
-    }
-
-    public double getSpeedACC() {
-        return speedACC;
-    }
-
-    public void setSpeedACC(double speedACC) {
-        this.speedACC = speedACC;
     }
 
     public String getTime() {
