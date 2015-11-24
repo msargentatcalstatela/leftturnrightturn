@@ -4,23 +4,13 @@ package com.myesis.classifierandsensorservice;
 import java.io.Serializable;
 
 public class DataSet implements Serializable, Cloneable {
-    private double lat;
-    private double lng;
-    private double speedGPS;
-    private double speedACC;
-    private String time;
+
     private double accelX;
     private double accelY;
     private double accelZ;
     private double d_accelX;
     private double d_accelY;
     private double d_accelZ;
-    private double linX;
-    private double linY;
-    private double linZ;
-    private double gravX;
-    private double gravY;
-    private double gravZ;
     private double magX;
     private double magY;
     private double magZ;
@@ -33,26 +23,17 @@ public class DataSet implements Serializable, Cloneable {
     private double d_gyroX;
     private double d_gyroY;
     private double d_gyroZ;
-    private double orientX;
-    private double orientY;
-    private double orientZ;
 
 
     @Override
     public String toString() {
-        return "     time; " + getTime() +
+        return
                 "     accelX; " + getAccelX() +
                 "     accelY; " + getAccelY() +
                 "     accelZ; " + getAccelZ() +
                 "     d_accelX; " + getD_accelX() +
                 "     d_accelY; " + getD_accelY() +
                 "     d_accelZ; " + getD_accelZ() +
-                "     linX; " + getLinX() +
-                "     linY; " + getLinY() +
-                "     linZ; " + getLinZ() +
-                "     gravX; " + getGravX() +
-                "     gravY; " + getGravY() +
-                "     gravZ; " + getGravZ() +
                 "     magX; " + getMagX() +
                 "     magY; " + getMagY() +
                 "     magZ; " + getMagZ() +
@@ -64,11 +45,7 @@ public class DataSet implements Serializable, Cloneable {
                 "     gyroZ; " + getGyroZ() +
                 "     d_gyroX; " + getD_gyroX() +
                 "     d_gyroY; " + getD_gyroY() +
-                "     d_gyroZ; " + getD_gyroZ() +
-                "     orientX; " + getOrientX() +
-                "     orientY; " + getOrientY() +
-                "     orientZ; " + getOrientZ();
-
+                "     d_gyroZ; " + getD_gyroZ();
     }
 
     public Object clone() throws CloneNotSupportedException {
@@ -147,13 +124,6 @@ public class DataSet implements Serializable, Cloneable {
         this.d_gyroZ = d_gyroZ;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
 
     public double getAccelX() {
         return accelX;
@@ -177,54 +147,6 @@ public class DataSet implements Serializable, Cloneable {
 
     public void setAccelZ(double accelZ) {
         this.accelZ = accelZ;
-    }
-
-    public double getLinX() {
-        return linX;
-    }
-
-    public void setLinX(double linX) {
-        this.linX = linX;
-    }
-
-    public double getLinY() {
-        return linY;
-    }
-
-    public void setLinY(double linY) {
-        this.linY = linY;
-    }
-
-    public double getLinZ() {
-        return linZ;
-    }
-
-    public void setLinZ(double linZ) {
-        this.linZ = linZ;
-    }
-
-    public double getGravX() {
-        return gravX;
-    }
-
-    public void setGravX(double gravX) {
-        this.gravX = gravX;
-    }
-
-    public double getGravY() {
-        return gravY;
-    }
-
-    public void setGravY(double gravY) {
-        this.gravY = gravY;
-    }
-
-    public double getGravZ() {
-        return gravZ;
-    }
-
-    public void setGravZ(double gravZ) {
-        this.gravZ = gravZ;
     }
 
     public double getMagX() {
@@ -274,31 +196,6 @@ public class DataSet implements Serializable, Cloneable {
     public void setGyroZ(double gyroZ) {
         this.gyroZ = gyroZ;
     }
-
-    public double getOrientX() {
-        return orientX;
-    }
-
-    public void setOrientX(double orientX) {
-        this.orientX = orientX;
-    }
-
-    public double getOrientY() {
-        return orientY;
-    }
-
-    public void setOrientY(double orientY) {
-        this.orientY = orientY;
-    }
-
-    public double getOrientZ() {
-        return orientZ;
-    }
-
-    public void setOrientZ(double orientZ) {
-        this.orientZ = orientZ;
-    }
-
 
 }
 

@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 //import com.myesis.classifierandsensorservice.DataSet;
@@ -34,11 +33,8 @@ public class SensorService extends Service implements SensorEventListener {
 
     private Sensor
             sensorACC,
-            sensorGrav,
-            sensorLinear,
             sensorMagnetic,
-            sensorGyro,
-            sensorOrient;
+            sensorGyro;
 
     private PowerManager.WakeLock mWakeLock;
     private PowerManager pm;
@@ -53,8 +49,6 @@ public class SensorService extends Service implements SensorEventListener {
     private final IBinder mBinder = new LocalBinder();
 
     DataSet data;
-
-
 
     public class LocalBinder extends Binder {
         public SensorService getService() {
@@ -120,7 +114,6 @@ public class SensorService extends Service implements SensorEventListener {
             fWakelock.release();
     }
 
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // TODO Auto-generated method stub
@@ -136,23 +129,9 @@ public class SensorService extends Service implements SensorEventListener {
         Sensor source = event.sensor;
 
         if (source.equals(sensorACC)) {
-
             data.setAccelX(event.values[0]);
             data.setAccelY(event.values[1]);
             data.setAccelZ(event.values[2]);
-            Log.i("My Code", "Value accelx: " + event.values[0]);
-
-        } else if (source.equals(sensorGrav)) {
-            data.setGravX(event.values[0]);
-            data.setGravY(event.values[1]);
-            data.setGravZ(event.values[2]);
-
-
-        } else if (source.equals(sensorLinear)) {
-            data.setLinX(event.values[0]);
-            data.setLinY(event.values[1]);
-            data.setLinZ(event.values[2]);
-
 
         } else if (source.equals(sensorMagnetic)) {
             data.setMagX(event.values[0]);
@@ -163,32 +142,30 @@ public class SensorService extends Service implements SensorEventListener {
             data.setGyroX(event.values[0]);
             data.setGyroY(event.values[1]);
             data.setGyroZ(event.values[2]);
-
-        } else if (source.equals(sensorOrient)) {
-            data.setOrientX(event.values[0]);
-            data.setOrientY(event.values[1]);
-            data.setOrientZ(event.values[2]);
-
         }
 
-        if (time - lastBroadcastTime >= freq / 1000.0) {
+        long dt = time - lastBroadcastTime;
+        if (dt >= freq / 1000.0 && hostingActivityRunning) {
 
             if(dataArray.size() > 0){
-                data.setD_accelX(data.getAccelX() - getDeltaDataSet(dataArray).getAccelX());
-                data.setD_accelY(data.getAccelY() - getDeltaDataSet(dataArray).getAccelY());
-                data.setD_accelZ(data.getAccelZ() - getDeltaDataSet(dataArray).getAccelZ());
+                DataSet last = getDeltaDataSet(dataArray);
 
-                data.setD_gyroX(data.getGyroX() - getDeltaDataSet(dataArray).getGyroX());
-                data.setD_gyroY(data.getGyroY() - getDeltaDataSet(dataArray).getGyroY());
-                data.setD_gyroZ(data.getGyroZ() - getDeltaDataSet(dataArray).getGyroZ());
+                dt /= 1000.0;//to keep scale reasonable
 
-                data.setD_magX(data.getMagX() - getDeltaDataSet(dataArray).getMagX());
-                data.setD_magY(data.getMagY() - getDeltaDataSet(dataArray).getMagY());
-                data.setD_magZ(data.getMagZ() - getDeltaDataSet(dataArray).getMagZ());
+                data.setD_accelX((data.getAccelX() - last.getAccelX())/dt);
+                data.setD_accelY((data.getAccelY() - last.getAccelY())/dt);
+                data.setD_accelZ((data.getAccelZ() - last.getAccelZ())/dt);
+
+                data.setD_gyroX((data.getGyroX() - last.getGyroX())/dt);
+                data.setD_gyroY((data.getGyroY() - last.getGyroY())/dt);
+                data.setD_gyroZ((data.getGyroZ() - last.getGyroZ())/dt);
+
+                data.setD_magX((data.getMagX() - last.getMagX())/dt);
+                data.setD_magY((data.getMagY() - last.getMagY())/dt);
+                data.setD_magZ((data.getMagZ() - last.getMagZ())/dt);
 
             }
 
-            data.setTime(new Date().toString());
             try {
                 dataArray.add((DataSet)data.clone());
             } catch (CloneNotSupportedException e) {
@@ -210,11 +187,8 @@ public class SensorService extends Service implements SensorEventListener {
 
     public void enableSensor() {
         sensorManager.registerListener(this, sensorACC, freq);
-        sensorManager.registerListener(this, sensorGrav, freq);
         sensorManager.registerListener(this, sensorMagnetic, freq);
-        sensorManager.registerListener(this, sensorLinear, freq);
         sensorManager.registerListener(this, sensorGyro, freq);
-        sensorManager.registerListener(this, sensorOrient, freq);
     }
 
 
@@ -232,19 +206,7 @@ public class SensorService extends Service implements SensorEventListener {
             Toast.makeText(this, "You don't have an accelerometer", Toast.LENGTH_SHORT).show();
         }
 
-        if (sensorManager.getSensorList(Sensor.TYPE_GRAVITY).size() != 0) {
-            sensorGrav = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 
-        } else {
-            Toast.makeText(this, "You don't have an gravity sensor", Toast.LENGTH_SHORT).show();
-        }
-
-        if (sensorManager.getSensorList(Sensor.TYPE_LINEAR_ACCELERATION).size() != 0) {
-            sensorLinear = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-
-        } else {
-            Toast.makeText(this, "You don't have an linear acceleration sensor", Toast.LENGTH_SHORT).show();
-        }
 
         if (sensorManager.getSensorList(Sensor.TYPE_MAGNETIC_FIELD).size() != 0) {
             sensorMagnetic = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
@@ -258,13 +220,6 @@ public class SensorService extends Service implements SensorEventListener {
 
         } else {
             Toast.makeText(this, "You don't have a gyroscope", Toast.LENGTH_SHORT).show();
-        }
-
-        if (sensorManager.getSensorList(Sensor.TYPE_ORIENTATION).size() != 0) {
-            sensorOrient = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-
-        } else {
-            Toast.makeText(this, "You don't have a oreination sensor", Toast.LENGTH_SHORT).show();
         }
 
     }
