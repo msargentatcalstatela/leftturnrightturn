@@ -18,8 +18,8 @@ public class LogisticPredictor extends Predictor {
     List<Double> paramList;
     private double yIntercept;
 
-    public LogisticPredictor(Context context, String filename){
-        String paramString = readParamFile(context, filename);
+    public LogisticPredictor(Context context, String filename, int option){
+        String paramString = readParamFile(context, filename, option);
         try {
             JSONObject object = new JSONObject(paramString);
             JSONArray params = object.getJSONArray("params");

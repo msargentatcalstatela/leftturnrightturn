@@ -5,6 +5,8 @@ import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -30,11 +32,18 @@ public abstract class Predictor {
 
     public abstract boolean predict(DataSet data);
 
-    public String readParamFile(Context context, String filename){
+    public String readParamFile(Context context, String filename, int option){
         //get text file from assets or raw folder, populate fields in predictor
         StringBuffer buff = new StringBuffer();
+
         try {
-            InputStreamReader stream = new InputStreamReader(context.getAssets().open(filename));
+            InputStreamReader stream = null;
+            if(option==0){
+                stream = new InputStreamReader(context.getAssets().open(filename));
+            }else if (option==1){
+                stream = new InputStreamReader(new FileInputStream(new File( filename)));
+            }
+
             String contents = "";
             BufferedReader bf = new BufferedReader(stream);
 
@@ -77,13 +86,6 @@ public abstract class Predictor {
             case Constants.D_ACCELZ:
                 return data.getD_accelZ();
 
-            case Constants.GRAVITYX:
-                return data.getGravX();
-            case Constants.GRAVITYY:
-                return data.getGravY();
-            case Constants.GRAVITYZ:
-                return data.getGravZ();
-
             case Constants.GYROX:
                 return data.getGyroX();
             case Constants.GYROY:
@@ -109,20 +111,6 @@ public abstract class Predictor {
                 return data.getD_magY();
             case Constants.D_MAGNETICZ:
                 return data.getD_magZ();
-
-            case Constants.ORIENTX:
-                return data.getOrientX();
-            case Constants.ORIENTY:
-                return data.getOrientY();
-            case Constants.ORIENTZ:
-                return data.getOrientZ();
-
-            case Constants.LINEARX:
-                return data.getLinX();
-            case Constants.LINEARY:
-                return data.getLinY();
-            case Constants.LINEARZ:
-                return data.getLinZ();
 
             default:
                 return 0;
